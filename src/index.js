@@ -513,7 +513,11 @@ class ProcessHtml {
             item.nodes.forEach(processNode);
             break;
 
-          case 'url':
+          case 'url': {
+            if (item.url.startsWith('!') && item.url.endsWith('!')) {
+              item.url = item.url.slice(1, item.url.length - 1);
+              return;
+            }
             if (item.url.replace(/\s/g, '').length && !/^#/.test(item.url) && loaderUtils.isUrlRequest(item.url, parserOptions.root)) {
               // Don't remove quotes around url when contain space
               if (item.url.indexOf(' ') === -1) {
@@ -527,7 +531,7 @@ class ProcessHtml {
               item.url = urlId;
             }
             break;
-
+          }
           default:
             break;
         }
